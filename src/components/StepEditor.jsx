@@ -31,8 +31,8 @@ export default function StepEditor({ step, onSave, onClose }) {
         </div>
 
         <div className="space-y-4">
-          <OptionGroup label="Cognitive Load" options={CL_OPTIONS} value={cl} onChange={setCl} />
-          <OptionGroup label="Emotional Direction" options={ED_OPTIONS} value={ed} onChange={setEd} />
+          <OptionGroup label="Cognitive Load" options={CL_OPTIONS} value={cl} onChange={setCl} accent="blue" />
+          <OptionGroup label="Emotional Direction" options={ED_OPTIONS} value={ed} onChange={setEd} accent="amber" />
 
           <div className="pt-3 border-t border-el-content-low flex items-center justify-between">
             <span className="text-xs font-medium text-el-content-low">Resolved Mood</span>
@@ -59,7 +59,12 @@ export default function StepEditor({ step, onSave, onClose }) {
   );
 }
 
-function OptionGroup({ label, options, value, onChange }) {
+const ACTIVE_STYLES = {
+  blue:  'border-el-blue-mid bg-el-blue-low text-el-blue-high',
+  amber: 'border-el-amber-mid bg-el-amber-subtle text-el-warning-high',
+};
+
+function OptionGroup({ label, options, value, onChange, accent = 'blue' }) {
   return (
     <div>
       <p className="text-xs font-medium text-el-content-mid mb-1.5">{label}</p>
@@ -70,7 +75,7 @@ function OptionGroup({ label, options, value, onChange }) {
             onClick={() => onChange(opt)}
             className={`flex-1 py-1.5 rounded-lg text-xs font-medium border transition-all ${
               value === opt
-                ? 'border-el-brand-mid bg-el-bg-low text-el-brand-high'
+                ? ACTIVE_STYLES[accent]
                 : 'border-el-content-low text-el-content-low hover:border-el-content-mid hover:text-el-content-mid'
             }`}
           >

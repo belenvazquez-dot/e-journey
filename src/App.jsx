@@ -4,8 +4,8 @@ import { SELLER_STAGES } from './data/seller';
 import { CRM_CAMPAIGNS } from './data/crm';
 import { resolve } from './engine/moodEngine';
 import ViewSwitcher from './components/ViewSwitcher';
+import ExpressionArc from './components/ExpressionArc';
 import JourneyBoard from './components/JourneyBoard';
-import MoodCurve from './components/MoodCurve';
 import StepEditor from './components/StepEditor';
 
 function buildStepMap(stages) {
@@ -41,68 +41,103 @@ function enrichStages(stages, stepMap) {
   }));
 }
 
-const BUYER_DEFAULT = buildStepMap(BUYER_STAGES);
+const BUYER_DEFAULT  = buildStepMap(BUYER_STAGES);
 const SELLER_DEFAULT = buildStepMap(SELLER_STAGES);
-const CRM_DEFAULT = buildCrmMap(CRM_CAMPAIGNS);
+const CRM_DEFAULT    = buildCrmMap(CRM_CAMPAIGNS);
 
 export default function App() {
   const [view, setView] = useState('buyer');
-  const [buyer, setBuyer] = useState(() => load('ej-buyer', BUYER_DEFAULT));
+  const [buyer, setBuyer] = useState(() => load('ej-buyer',  BUYER_DEFAULT));
   const [seller, setSeller] = useState(() => load('ej-seller', SELLER_DEFAULT));
   const [crm] = useState(() => load('ej-crm', CRM_DEFAULT));
   const [editingId, setEditingId] = useState(null);
+  const [phasesOpen, setPhasesOpen] = useState(false);
 
-  useEffect(() => localStorage.setItem('ej-buyer', JSON.stringify(buyer)), [buyer]);
+  useEffect(() => localStorage.setItem('ej-buyer',  JSON.stringify(buyer)),  [buyer]);
   useEffect(() => localStorage.setItem('ej-seller', JSON.stringify(seller)), [seller]);
 
   function handleSave(id, cl, ed) {
     const updater = prev => ({ ...prev, [id]: { ...prev[id], cl, ed } });
-    if (view === 'buyer') setBuyer(updater);
-    else if (view === 'seller') setSeller(updater);
+    if (view === 'buyer')  setBuyer(updater);
+    if (view === 'seller') setSeller(updater);
     setEditingId(null);
   }
 
-  let boardData, curveData;
-
-  if (view === 'crm') {
-    boardData = Object.values(crm);
-    curveData = boardData.map(c => ({ name: c.name, mood: c.mood }));
-  } else {
-    const stages = view === 'buyer' ? BUYER_STAGES : SELLER_STAGES;
-    const stepMap = view === 'buyer' ? buyer : seller;
-    boardData = enrichStages(stages, stepMap);
-    curveData = boardData.flatMap(stage =>
-      stage.steps.map(s => ({ name: s.name, mood: s.mood }))
-    );
+  function handleViewChange(v) {
+    setView(v);
+    setEditingId(null);
+    setPhasesOpen(false);
   }
 
+  // ── Derived data ──────────────────────────────────────────────────────────
+  const isCrm    = view === 'crm';
+  const stages   = view === 'buyer' ? BUYER_STAGES : SELLER_STAGES;
+  const stepMap  = view === 'buyer' ? buyer : seller;
+  const boardData = isCrm
+    ? Object.values(crm)
+    : enrichStages(stages, stepMap);
+
   const editingStep = editingId
-    ? view === 'buyer'
-      ? buyer[editingId]
-      : view === 'seller'
-        ? seller[editingId]
-        : null
+    ? (view === 'buyer' ? buyer[editingId] : view === 'seller' ? seller[editingId] : null)
     : null;
 
   return (
     <div className="min-h-screen bg-el-bg-base">
+      {/* Header */}
       <header className="bg-el-bg-low border-b border-el-content-low sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-el-content-high leading-none">Journey Map</h1>
             <p className="text-xs text-el-content-low mt-1">Wallapop Expressive Layer</p>
           </div>
-          <ViewSwitcher active={view} onChange={v => { setView(v); setEditingId(null); }} />
+          <ViewSwitcher active={view} onChange={handleViewChange} />
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        <JourneyBoard
-          view={view}
-          boardData={boardData}
-          onEdit={id => view !== 'crm' && setEditingId(id)}
-        />
-        <MoodCurve data={curveData} />
+      <main className="max-w-6xl mx-auto px-6 py-8 space-y-6">
+        {isCrm ? (
+          // ── CRM: simple board, no arc ───────────────────────────────────
+          <div className="bg-el-bg-mid border border-el-content-low rounded-2xl p-6">
+            <h2 className="text-sm font-bold text-el-content-high mb-5">CRM Campaigns</h2>
+            <JourneyBoard view="crm" boardData={boardData} onEdit={() => {}} />
+          </div>
+        ) : (
+          <>
+            {/* ── Expressiveness arc ─────────────────────────────────────── */}
+            <ExpressionArc
+              view={view}
+              stages={stages}
+              stepMap={stepMap}
+            />
+
+            {/* ── Expand / collapse phases ───────────────────────────────── */}
+            <div>
+              <button
+                onClick={() => setPhasesOpen(v => !v)}
+                className="flex items-center gap-2 text-xs font-semibold text-el-content-low hover:text-el-content-mid transition-colors group"
+                aria-expanded={phasesOpen}
+              >
+                <span
+                  className="inline-block transition-transform duration-200"
+                  style={{ transform: phasesOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                >
+                  ▾
+                </span>
+                {phasesOpen ? 'Hide phases' : 'Show phases'}
+              </button>
+
+              {phasesOpen && (
+                <div className="mt-5">
+                  <JourneyBoard
+                    view={view}
+                    boardData={boardData}
+                    onEdit={id => setEditingId(id)}
+                  />
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </main>
 
       {editingStep && (

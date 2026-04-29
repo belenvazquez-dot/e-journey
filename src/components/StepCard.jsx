@@ -1,11 +1,11 @@
 import Pill from './Pill';
 
-// Mood accent uses EL-Dark token hex values directly (Tailwind arbitrary)
+// Purple accent for all moods — intensity scales with mood level
 const MOOD_ACCENT = {
-  Grounded: 'border-t-[#4a4b4f]',
-  Core:     'border-t-[#385ef9]',
-  Lifted:   'border-t-[#ffa600]',
-  Peak:     'border-t-[#00d486]',
+  Grounded: 'border-t-[#521f78]',
+  Core:     'border-t-[#7c4fa0]',
+  Lifted:   'border-t-[#a56bce]',
+  Peak:     'border-t-[#c27aff]',
 };
 
 export default function StepCard({ step, view, onEdit }) {
@@ -17,7 +17,7 @@ export default function StepCard({ step, view, onEdit }) {
       onClick={isCrm ? undefined : () => onEdit(step.id)}
       className={[
         'bg-el-bg-mid rounded-xl p-4 w-40 text-left border border-el-content-low border-t-4 transition-all',
-        MOOD_ACCENT[step.mood] ?? 'border-t-el-content-low',
+        MOOD_ACCENT[step.mood] ?? 'border-t-el-purple-low',
         !isCrm && 'hover:border-el-content-mid hover:brightness-110 cursor-pointer',
       ]
         .filter(Boolean)

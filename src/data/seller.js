@@ -1,19 +1,14 @@
 export const SELLER_STAGES = [
   {
-    name: 'Awareness',
+    name: 'Interest',
     steps: [
       { id: 's1', name: 'Awareness', cl: 'Low', ed: 'Positive' },
-    ],
-  },
-  {
-    name: 'Registration',
-    steps: [
       { id: 's2', name: 'Access', cl: 'High', ed: 'Negative' },
       { id: 's3', name: 'Onboard', cl: 'Low', ed: 'Neutral' },
     ],
   },
   {
-    name: 'Account',
+    name: 'Management',
     steps: [
       { id: 's4', name: 'Manage Account', cl: 'High', ed: 'Neutral' },
       { id: 's5', name: 'Manage Listings', cl: 'High', ed: 'Neutral' },
