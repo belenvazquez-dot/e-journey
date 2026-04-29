@@ -1,10 +1,11 @@
 import Pill from './Pill';
 
+// Mood accent uses EL-Dark token hex values directly (Tailwind arbitrary)
 const MOOD_ACCENT = {
-  Grounded: 'border-t-slate-400',
-  Core: 'border-t-blue-400',
-  Lifted: 'border-t-amber-400',
-  Peak: 'border-t-teal-400',
+  Grounded: 'border-t-[#4a4b4f]',
+  Core:     'border-t-[#385ef9]',
+  Lifted:   'border-t-[#ffa600]',
+  Peak:     'border-t-[#00d486]',
 };
 
 export default function StepCard({ step, view, onEdit }) {
@@ -15,14 +16,16 @@ export default function StepCard({ step, view, onEdit }) {
     <Wrapper
       onClick={isCrm ? undefined : () => onEdit(step.id)}
       className={[
-        'bg-white rounded-xl p-4 w-40 text-left shadow-sm border border-slate-200 border-t-4 transition-all',
-        MOOD_ACCENT[step.mood] ?? 'border-t-slate-200',
-        !isCrm && 'hover:border-slate-300 hover:shadow-md cursor-pointer',
+        'bg-el-bg-mid rounded-xl p-4 w-40 text-left border border-el-content-low border-t-4 transition-all',
+        MOOD_ACCENT[step.mood] ?? 'border-t-el-content-low',
+        !isCrm && 'hover:border-el-content-mid hover:brightness-110 cursor-pointer',
       ]
         .filter(Boolean)
         .join(' ')}
     >
-      <p className="text-sm font-medium text-slate-900 mb-3 leading-snug min-h-[2.5rem]">{step.name}</p>
+      <p className="text-sm font-medium text-el-content-high mb-3 leading-snug min-h-[2.5rem]">
+        {step.name}
+      </p>
       <div className="space-y-1.5">
         {!isCrm && (
           <>

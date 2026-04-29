@@ -6,15 +6,15 @@ const VIEWS = [
 
 export default function ViewSwitcher({ active, onChange }) {
   return (
-    <div className="flex bg-slate-100 rounded-xl p-1 gap-0.5">
+    <div className="flex bg-el-bg-base rounded-xl p-1 gap-0.5 border border-el-content-low">
       {VIEWS.map(v => (
         <button
           key={v.id}
           onClick={() => onChange(v.id)}
           className={`px-5 py-1.5 rounded-lg text-sm font-medium transition-all ${
             active === v.id
-              ? 'bg-white text-slate-900 shadow-sm'
-              : 'text-slate-500 hover:text-slate-700'
+              ? 'bg-el-bg-mid text-el-content-high shadow-sm'
+              : 'text-el-content-low hover:text-el-content-mid'
           }`}
         >
           {v.label}

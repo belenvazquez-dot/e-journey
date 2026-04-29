@@ -1,26 +1,27 @@
+// Colors pulled from EL-Dark tokens
 const STYLES = {
   cl: {
-    Low: 'bg-green-100 text-green-700',
-    Medium: 'bg-amber-100 text-amber-700',
-    High: 'bg-red-100 text-red-700',
+    Low:    'bg-el-positive-low text-el-positive-high',
+    Medium: 'bg-el-warning-subtle text-el-warning-high',
+    High:   'bg-el-negative-low text-el-negative-high',
   },
   ed: {
-    Positive: 'bg-emerald-100 text-emerald-700',
-    Neutral: 'bg-slate-100 text-slate-600',
-    Negative: 'bg-rose-100 text-rose-700',
+    Positive: 'bg-el-positive-low text-el-positive-high',
+    Neutral:  'bg-el-bg-low text-el-content-mid border border-el-content-low',
+    Negative: 'bg-el-negative-low text-el-negative-high',
   },
   mood: {
-    Grounded: 'bg-slate-200 text-slate-700',
-    Core: 'bg-blue-100 text-blue-700',
-    Lifted: 'bg-amber-100 text-amber-700',
-    Peak: 'bg-teal-100 text-teal-700',
+    Grounded: 'bg-el-bg-low text-el-content-mid',
+    Core:     'bg-el-blue-low text-el-blue-high',
+    Lifted:   'bg-el-orange-low text-el-orange-high',
+    Peak:     'bg-el-lime-low text-el-lime-high',
   },
 };
 
 const PREFIXES = { cl: 'CL', ed: 'ED' };
 
 export default function Pill({ type, value }) {
-  const colorClass = STYLES[type]?.[value] ?? 'bg-slate-100 text-slate-600';
+  const colorClass = STYLES[type]?.[value] ?? 'bg-el-bg-low text-el-content-mid';
   const prefix = PREFIXES[type];
   return (
     <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${colorClass}`}>

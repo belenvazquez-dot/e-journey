@@ -85,12 +85,12 @@ export default function App() {
     : null;
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+    <div className="min-h-screen bg-el-bg-base">
+      <header className="bg-el-bg-low border-b border-el-content-low sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-slate-900 leading-none">Journey Map</h1>
-            <p className="text-xs text-slate-400 mt-1">Wallapop Expressive Layer</p>
+            <h1 className="text-xl font-bold text-el-content-high leading-none">Journey Map</h1>
+            <p className="text-xs text-el-content-low mt-1">Wallapop Expressive Layer</p>
           </div>
           <ViewSwitcher active={view} onChange={v => { setView(v); setEditingId(null); }} />
         </div>

@@ -13,39 +13,29 @@ export default function StepEditor({ step, onSave, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white rounded-2xl shadow-2xl p-6 w-80 animate-in fade-in zoom-in-95">
+      <div className="bg-el-bg-mid border border-el-content-low rounded-2xl shadow-2xl p-6 w-80">
         <div className="flex items-start justify-between mb-5">
           <div>
-            <h3 className="font-semibold text-slate-900">{step.name}</h3>
-            <p className="text-xs text-slate-400 mt-0.5">Edit cognitive load &amp; emotional direction</p>
+            <h3 className="font-semibold text-el-content-high">{step.name}</h3>
+            <p className="text-xs text-el-content-low mt-0.5">Edit cognitive load &amp; emotional direction</p>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 text-xl leading-none mt-0.5"
+            className="text-el-content-low hover:text-el-content-mid text-xl leading-none mt-0.5 transition-colors"
           >
             ×
           </button>
         </div>
 
         <div className="space-y-4">
-          <OptionGroup
-            label="Cognitive Load"
-            options={CL_OPTIONS}
-            value={cl}
-            onChange={setCl}
-          />
-          <OptionGroup
-            label="Emotional Direction"
-            options={ED_OPTIONS}
-            value={ed}
-            onChange={setEd}
-          />
+          <OptionGroup label="Cognitive Load" options={CL_OPTIONS} value={cl} onChange={setCl} />
+          <OptionGroup label="Emotional Direction" options={ED_OPTIONS} value={ed} onChange={setEd} />
 
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500">Resolved Mood</span>
+          <div className="pt-3 border-t border-el-content-low flex items-center justify-between">
+            <span className="text-xs font-medium text-el-content-low">Resolved Mood</span>
             <Pill type="mood" value={mood} />
           </div>
         </div>
@@ -53,13 +43,13 @@ export default function StepEditor({ step, onSave, onClose }) {
         <div className="flex gap-2 mt-5">
           <button
             onClick={onClose}
-            className="flex-1 py-2 rounded-xl text-sm text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors"
+            className="flex-1 py-2 rounded-xl text-sm text-el-content-mid border border-el-content-low hover:border-el-content-mid transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={() => onSave(step.id, cl, ed)}
-            className="flex-1 py-2 rounded-xl text-sm font-semibold bg-teal-500 text-white hover:bg-teal-600 transition-colors"
+            className="flex-1 py-2 rounded-xl text-sm font-semibold bg-el-brand-mid text-el-content-onhigh hover:brightness-110 transition-all"
           >
             Save
           </button>
@@ -72,7 +62,7 @@ export default function StepEditor({ step, onSave, onClose }) {
 function OptionGroup({ label, options, value, onChange }) {
   return (
     <div>
-      <p className="text-xs font-medium text-slate-600 mb-1.5">{label}</p>
+      <p className="text-xs font-medium text-el-content-mid mb-1.5">{label}</p>
       <div className="flex gap-1.5">
         {options.map(opt => (
           <button
@@ -80,8 +70,8 @@ function OptionGroup({ label, options, value, onChange }) {
             onClick={() => onChange(opt)}
             className={`flex-1 py-1.5 rounded-lg text-xs font-medium border transition-all ${
               value === opt
-                ? 'border-teal-500 bg-teal-50 text-teal-700'
-                : 'border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700'
+                ? 'border-el-brand-mid bg-el-bg-low text-el-brand-high'
+                : 'border-el-content-low text-el-content-low hover:border-el-content-mid hover:text-el-content-mid'
             }`}
           >
             {opt}
